@@ -16,3 +16,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@supports (-webkit-touch-callout: none) {
+  .work-img-ios {
+    box-shadow: 0 4px 24px 0 rgba(4,223,216,0.18) !important;
+    filter: none !important;
+  }
+  .diver-glow-ios {
+    filter: drop-shadow(0 0 8px white) !important;
+  }
+}

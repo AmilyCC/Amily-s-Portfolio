@@ -55,7 +55,7 @@ const ScrollProgress = ({ progress }) => {
       <motion.div 
         className="absolute"
         style={{ 
-          x: `calc(50% + ${diverX}px)`,
+          x: `calc(-50% + ${diverX}px)`,
           bottom: `-28px`,
           transition: { type: "spring", stiffness: 50, damping: 20 }
         }}
@@ -65,6 +65,7 @@ const ScrollProgress = ({ progress }) => {
           alt="diver" 
           width="60" 
           height="80" 
+          className="diver-glow-ios"
           style={{ display: 'block', filter: 'drop-shadow(0 0 0 white) drop-shadow(0 0 4px white) drop-shadow(0 0 8px white)' }}
         />
         <motion.div 

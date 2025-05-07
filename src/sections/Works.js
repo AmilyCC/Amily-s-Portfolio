@@ -4,6 +4,14 @@ import AnimatedBlobs from "../components/AnimatedBlobs";
 
 const projects = [
   {
+    title: "Amily的旅日地圖",
+    description:
+      "使用 chatGPT生成所有圖片，並用前端技術製作，可放大、縮小、平移與點擊呼叫相關區塊的日本地圖",
+    liveDemo: "https://amilycc.github.io/JP-map/",
+    github: "",
+    image: "/images/work4.png",
+  },
+  {
     title: "心理測驗原型網站",
     description:
       "使用 Node.js、Express、Bootstrap、body-parser、mongoose 和 nodemon 開發，具備資料庫儲存功能，能記錄使用者輸入、計算並產生對應結果，並可分享到社群媒體。",
@@ -25,7 +33,7 @@ const projects = [
       "想看更多過去的專案，可以參考我的 GitHub。代表作品包括：記憶遊戲、LINE LIFF 串接、短網址頁面等。",
     github: "https://github.com/AmilyCC",
     image: "/images/work3.png",
-  },  
+  }  
 ];
 
 export default function Works() {
