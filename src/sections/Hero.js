@@ -1,67 +1,160 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 export default function Hero() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const scale = useSpring(1, { stiffness: 100, damping: 30 });
+
+  // 動態背景效果
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
+      const x = (clientX - left) / width;
+      const y = (clientY - top) / height;
+      
+      containerRef.current.style.setProperty('--mouse-x', x);
+      containerRef.current.style.setProperty('--mouse-y', y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
-    <section 
-      className="h-screen flex flex-col justify-center items-start text-white relative overflow-hidden pl-6 md:items-center"
+    <motion.section
+      ref={containerRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#FF3366] via-[#FF6B6B] to-[#4ECDC4]"
       style={{
-        background: "repeating-linear-gradient(-45deg, #66c0da 0px, #66c0da 80px, transparent 80px, transparent 250px), rgb(250, 204, 21)"
+        '--mouse-x': 0.5,
+        '--mouse-y': 0.5,
       }}
     >
-      {/* H1 主要區塊 */}
-      <motion.h1
-        className="w-full font-bold uppercase relative flex flex-col md:h-[60vh] md:justify-between"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        {/* 名字 - 手機版靠左，桌機版透過 `mt` 和 `ml` 調整 */}
-        <motion.span 
-          className="text-6xl md:text-9xl text-[#96519a] mt-0 md:mt-[5vh] md:ml-[15%]"
-          style={{ textShadow: "3px 3px 0px #312e81" }}
-          whileHover={{ scale: 1.1 }}
+      {/* 動態背景網格 */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      
+      {/* 動態光暈效果 */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#FF3366]/30 via-[#FF6B6B]/30 to-[#4ECDC4]/30 opacity-50 mix-blend-overlay" />
+      
+      {/* 主要內容容器 */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          Amily
-        </motion.span>
+          {/* 名字動畫 */}
+          <motion.div
+            className="relative inline-block"
+            whileHover={{ scale: 1.05 }}
+            onHoverStart={() => scale.set(1.1)}
+            onHoverEnd={() => scale.set(1)}
+          >
+            <motion.h1
+              className="text-7xl md:text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-[#FFE66D] to-[#4ECDC4]"
+              style={{ y }}
+            >
+              Amily Chang
+            </motion.h1>
+            <motion.div
+              className="absolute -inset-1 bg-gradient-to-r from-[#FF3366] to-[#4ECDC4] rounded-lg blur opacity-25"
+              style={{ scale }}
+            />
+          </motion.div>
 
-        <motion.span 
-          className="text-6xl md:text-9xl text-[#96519a] mt-2 ] md:ml-[20%]"
-          style={{ textShadow: "3px 3px 0px #312e81" }}
-          whileHover={{ scale: 1.1 }}
-        >
-          Chang's
-        </motion.span>
+          {/* 職稱 */}
+          <motion.div
+            className="mt-6 text-2xl md:text-4xl font-light text-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <span className="inline-block">
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                Web Developer
+              </motion.span>
+              <span className="mx-3 text-[#FFE66D]">•</span>
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                UI/UX Designer
+              </motion.span>
+              <span className="mx-3 text-[#FFE66D]">•</span>
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                AI Solutions
+              </motion.span>
+            </span>
+          </motion.div>
 
-        {/* Portfolio */}
-        <motion.span 
-          className="text-5xl md:text-7xl text-white mt-2 ] md:ml-[20%]"
-          style={{ textShadow: "4px 4px 0px #312e81" }}
-          whileHover={{ scale: 1.1 }}
-        >
-          Portfolio
-        </motion.span>
+          {/* 描述文字 */}
+          <motion.p
+            className="mt-8 text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            打造兼具美感與實用性的數位體驗，
+            <br />
+            將每個想法化為流暢而有影響力的解決方案。
+          </motion.p>
+        </motion.div>
+      </div>
 
-        {/* 角色說明 - 手機版靠左，桌機版透過 `ml` 和 `mt` 讓位置適當分布 */}
-        <motion.span 
-          className="text-xl md:text-4xl mt-4 ] md:ml-[35%]"
-          style={{ textShadow: "2px 2px 0px #312e81" }}
-          whileHover={{ scale: 1.1 }}
-        >
-          Web Developer, UI/UX & AI Solutions
-        </motion.span>
-      </motion.h1>
-
-      {/* 副標語 */}
+      {/* 滾動提示 */}
       <motion.div
-        className="relative bottom-0 w-95 flex justify-start md:justify-center border-b-8 border-yellow-400 mr-0 ml-auto mt-20 mb-0 pl-10 pr-4 pt-5 pb-4 text-lg md:text-2xl text-[#66c0da] font-bold bg-white"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ 
+          duration: 2,
+          ease: "easeInOut"
+        }}
       >
-        I don’t just build websites.  
-        <br></br> I craft seamless experiences, solve real problems & bring ideas to life.  
+        <div className="flex flex-col items-center gap-2">
+          <motion.span 
+            className="text-white/60 text-sm font-light"
+            animate={{ opacity: [0.4, 0.8, 0.4] }}
+            transition={{ 
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            Scroll
+          </motion.span>
+          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center relative">
+            <motion.div
+              className="w-1.5 h-3 bg-white rounded-full mt-2"
+              animate={{ 
+                y: [0, 12, 0],
+                opacity: [0.3, 0.8, 0.3]
+              }}
+              transition={{ 
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: [0, 0.5, 1]
+              }}
+            />
+          </div>
+        </div>
       </motion.div>
-    </section>
+    </motion.section>
   );
 }
