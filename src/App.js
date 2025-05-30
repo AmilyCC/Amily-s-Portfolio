@@ -18,16 +18,35 @@ function App() {
   const [gradientPosition, setGradientPosition] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
+    let lastScrollY = window.scrollY;
+    let lastTime = Date.now();
+    const throttleDelay = 16; // 約 60fps
+
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      let progress = docHeight > 0 ? scrollTop / docHeight : 0;
-      progress = Math.min(Math.max(progress, 0), 1);
-      setScrollProgress(progress);
-      setGradientPosition(progress);
+      const currentTime = Date.now();
+      if (!ticking && (currentTime - lastTime) >= throttleDelay) {
+        window.requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          let progress = docHeight > 0 ? scrollTop / docHeight : 0;
+          progress = Math.min(Math.max(progress, 0), 1);
+          
+          // 只在滾動距離超過閾值時更新
+          if (Math.abs(scrollTop - lastScrollY) > 5) {
+            setScrollProgress(progress);
+            setGradientPosition(progress);
+            lastScrollY = scrollTop;
+          }
+          
+          lastTime = currentTime;
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // 初始化
 
     return () => {
