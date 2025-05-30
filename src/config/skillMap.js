@@ -18,7 +18,7 @@ export const skillCategories = {
     textPosition: { x: 20, textAnchor: "start" }
   },
   dev: {
-    name: "前、後端開發",
+    name: "前後端開發",
     icon: "💻",
     color: "var(--skill-dev)",
     colorAlpha: "var(--skill-dev-20)",
@@ -31,7 +31,7 @@ export const skillCategories = {
       "曾開發簡易互動遊戲與動畫功能，熟悉前後端整合流程"
     ],
     level: 8.6,
-    lineBreak: ["前、後端", "開發"],
+    lineBreak: ["前後端", "開發"],
     textPosition: { x: 0, textAnchor: "start" }
   },
   collab: {
@@ -69,7 +69,7 @@ export const skillCategories = {
     textPosition: { x: 0, textAnchor: "middle" }
   },
   ai: {
-    name: "DB與AI工具應用",
+    name: "DB與AI應用",
     icon: "🤖",
     color: "var(--skill-ai)",
     colorAlpha: "var(--skill-ai-20)",
@@ -82,7 +82,7 @@ export const skillCategories = {
       "優化團隊日常任務流程，減少約 60% 重複性人工作業"
     ],
     level: 7,
-    lineBreak: ["DB與AI", "工具應用"],
+    lineBreak: ["DB與AI", "應用"],
     textPosition: { x: 0, textAnchor: "end" }
   }
 };

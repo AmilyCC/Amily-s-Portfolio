@@ -278,16 +278,16 @@ export default function Modal() {
                 </div>
                 <div className="space-y-1.5 text-zinc-300 text-xs md:text-sm">
                   <p className="flex items-start gap-2">
-                    <span className="text-rose-300 font-medium">問題：</span>
-                    <span>{item.problem}</span>
+                    <span className="text-rose-300 font-medium whitespace-nowrap text-sm md:text-base">問題：</span>
+                    <span className="text-sm md:text-base">{item.problem}</span>
                   </p>
                   <p className="flex items-start gap-2">
-                    <span className="text-amber-300 font-medium">思考：</span>
-                    <span>{item.thought}</span>
+                    <span className="text-amber-300 font-medium whitespace-nowrap text-sm md:text-base">思考：</span>
+                    <span className="text-sm md:text-base">{item.thought}</span>
                   </p>
                   <p className="flex items-start gap-2">
-                    <span className="text-emerald-300 font-medium">建議：</span>
-                    <span>{item.solution}</span>
+                    <span className="text-emerald-300 font-medium whitespace-nowrap text-sm md:text-base">建議：</span>
+                    <span className="text-sm md:text-base">{item.solution}</span>
                   </p>
                 </div>
               </div>
