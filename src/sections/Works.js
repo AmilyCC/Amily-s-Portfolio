@@ -256,7 +256,7 @@ function WorkCard({ project, index, onReadMore, sectionProgress }) {
                 <span className="absolute inset-0 transform md:group-hover:translate-x-[200%] transition-transform duration-500">→</span>
                 <span className="absolute inset-0 -translate-x-[200%] md:group-hover:translate-x-0 transition-transform duration-500">→</span>
               </span>
-              <style jsx>{`
+              <style>{`
                 @media (max-width: 768px) {
                   button {
                     animation: blink 1.5s infinite;

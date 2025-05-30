@@ -65,12 +65,12 @@ export default function Hero() {
       <div className="relative max-w-6xl mx-auto h-full flex flex-col justify-center">
         
         {/* 氣泡動畫 */}
-        {[...Array(15)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <Bubble
             key={i}
-            delay={i * 0.5}
-            duration={5 + Math.random() * 5}
-            size={10 + Math.random() * 20}
+            delay={i * 0.8}
+            duration={8 + Math.random() * 4}
+            size={15 + Math.random() * 15}
             left={Math.random() * 100}
           />
         ))}
