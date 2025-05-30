@@ -1,3 +1,19 @@
+/* 技能顏色變數 */
+:root {
+  --skill-uiux: #FF9E9E;
+  --skill-dev: #91C4F2;
+  --skill-collab: #B5E59F;
+  --skill-ecommerce: #FFD36E;
+  --skill-ai: #A98DFD;
+
+  /* 技能顏色透明度變數 */
+  --skill-uiux-20: rgba(255, 158, 158, 0.2);
+  --skill-dev-20: rgba(145, 196, 242, 0.2);
+  --skill-collab-20: rgba(181, 229, 159, 0.2);
+  --skill-ecommerce-20: rgba(255, 211, 110, 0.2);
+  --skill-ai-20: rgba(169, 141, 253, 0.2);
+}
+
 .App {
   text-align: center;
 }

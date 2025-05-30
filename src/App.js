@@ -1,93 +1,96 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ParallaxProvider, Parallax } from "react-scroll-parallax";
-import LocomotiveScroll from "locomotive-scroll";
-import "locomotive-scroll/dist/locomotive-scroll.css";
+import React, { useEffect, useState, createContext } from "react";
+import "./App.css";
 import Hero from "./sections/Hero";
 import Skills from "./sections/Skills";
 import Works from "./sections/Works";
 import Contact from "./sections/Contact";
 import ScrollProgress from "./components/ScrollProgress";
+import Bubbles from "./components/Bubbles";
+import Modal from "./components/Modal";
+import ZoomParallax from "./components/ZoomParallax";
+
+// 創建 Context
+export const ModalContext = createContext();
 
 function App() {
-  const scrollRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [selectedWork, setSelectedWork] = useState(null);
+  const [gradientPosition, setGradientPosition] = useState(0);
 
   useEffect(() => {
-    // 判斷是否為手機裝置
-    const isMobile = window.innerWidth <= 768;
-    let scroll;
-    let handleScroll;
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      let progress = docHeight > 0 ? scrollTop / docHeight : 0;
+      progress = Math.min(Math.max(progress, 0), 1);
+      setScrollProgress(progress);
+      setGradientPosition(progress);
+    };
 
-    if (isMobile) {
-      // 手機：用原生 scroll 事件
-      handleScroll = () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        let progress = docHeight > 0 ? scrollTop / docHeight : 0;
-        progress = Math.min(Math.max(progress, 0), 1);
-        setScrollProgress(progress);
-      };
-      window.addEventListener('scroll', handleScroll);
-      handleScroll(); // 初始化
-    } else {
-      // 桌機：用 LocomotiveScroll
-      scroll = new LocomotiveScroll({
-        el: scrollRef.current,
-        smooth: true,
-        lerp: 0.1,
-        multiplier: 1,
-        class: "is-revealed",
-        smartphone: {
-          smooth: true
-        },
-        tablet: {
-          smooth: true
-        }
-      });
-      scroll.on('scroll', (args) => {
-        let progress = args.scroll.y / args.limit.y;
-        progress = Math.min(Math.max(progress, 0), 1);
-        setScrollProgress(progress);
-      });
-      // 強制 update，確保高度正確
-      setTimeout(() => {
-        if (scroll && typeof scroll.update === 'function') scroll.update();
-      }, 100);
-    }
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // 初始化
 
     return () => {
-      if (isMobile) {
-        window.removeEventListener('scroll', handleScroll);
-      } else if (scroll) {
-        scroll.destroy();
-      }
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  // 計算漸層顏色
+  const getGradientColor = (progress) => {
+    const colors = [
+      '#FF3366', // Hero
+      '#FF6B6B', // Skills
+      '#4ECDC4', // Works
+      '#243b52', // Contact
+      '#020e19'  // End
+    ];
+    
+    // 自定義顏色停止點
+    const colorStops = [0, 0.05, 0.1, 0.6, 0.85, 1];
+    
+    // 計算漸層
+    const gradientStops = colors.map((color, index) => {
+      const stop = colorStops[index] * 100;
+      return `${color} ${stop}%`;
+    }).join(', ');
+    
+    return `linear-gradient(175deg, ${gradientStops})`;
+  };
+
   return (
-    <ParallaxProvider>
-      <div className="relative min-h-screen bg-gradient-to-br from-[#FF3366] via-[#FF6B6B] to-[#4ECDC4]">
+    <ModalContext.Provider value={{ selectedWork, setSelectedWork }}>
+      <div 
+        className="relative min-h-screen overflow-x-hidden"
+        style={{
+          background: getGradientColor(gradientPosition)
+        }}
+      >
+        {/* 格子背景 */}
+        <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:1rem_2rem] [mask-image:radial-gradient(ellipse_40%_50%_at_50%_80%,#000_80%,transparent_100%)]" />
+        
+        <Bubbles />
         <ScrollProgress progress={scrollProgress} />
-        <div 
-          ref={scrollRef} 
-          data-scroll-container 
-          className="font-sans min-h-[200vh]"
-        >
-          <Parallax speed={-5}>
-            <Hero />
-          </Parallax>
-          <Parallax speed={-2}>
-            <Skills />
-          </Parallax>
-          <Parallax speed={-3}>
-            <Works />
-          </Parallax>
-          <Parallax speed={-1}>
-            <Contact />
-          </Parallax>
+        <div className="font-sans relative overflow-x-hidden">
+          {/* <div className="space-y-0"> */}
+            <ZoomParallax>
+              <Hero />
+            </ZoomParallax>
+            <div className="mt-[-10vh] md:mt-[-10vh] xl:mt-[-20vh] relative z-10">
+              <Skills />
+            </div>
+            <div className="mt-[-15vh] md:mt-[-10vh] xl:mt-[-20vh] relative z-20">
+              <Works />
+            </div>
+            <div className="mt-[-10vh] md:mt-[-20vh] lg:mt-[-20vh] relative z-30">
+              <ZoomParallax>
+                <Contact />
+              </ZoomParallax>
+            </div>
+          {/* </div> */}
         </div>
+        <Modal />
       </div>
-    </ParallaxProvider>
+    </ModalContext.Provider>
   );
 }
 

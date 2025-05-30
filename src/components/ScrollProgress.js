@@ -7,11 +7,11 @@ const ScrollProgress = ({ progress }) => {
   const waterOpacity = 0.2 + (progress * 0.6);
   const bubblesOpacity = 1 - (progress * 0.7);
 
-  // bar 無邊框
+  
   // 計算背景漸層顏色
   const getGradient = () => {
     // 起始：白→亮藍綠，結束：亮藍綠→深藍
-    const startTop = [255, 255, 255, 0.9];
+    const startTop = [255, 255, 255, 1];
     const startBottom = [4, 223, 216, 0.9];
     const endTop = [4, 223, 216, 0.9];
     const endBottom = [25, 8, 64, 0.9];
