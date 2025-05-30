@@ -5,12 +5,7 @@ import {
   FaUserTie, 
   FaCode, 
   FaLightbulb, 
-  FaChartLine, 
-  FaMobileAlt, 
-  FaClipboardList,
-  FaMapMarkerAlt,
-  FaCompass,
-  FaImage
+  FaChartLine
 } from "react-icons/fa";
 import { getSkillColor } from "../config/skillMap";
 import { ModalContext } from "../App";
@@ -50,32 +45,24 @@ const projectContents = {
       title: "UX 決策與挑戰",
       items: [
         {
-          icon: FaMapMarkerAlt,
-          iconColor: "blue",
           title: "圖釘點擊行為與探索機制設計",
           problem: "圖釘點擊後彈窗位置不穩，缺乏明確回饋與探索動機。",
           thought: "使用者需能辨識目前點選內容並具備明確回饋機制。",
           solution: "設計固定定位與動畫回饋，並加入已探索樣式與探索進度條。"
         },
         {
-          icon: FaCompass,
-          iconColor: "lime",
           title: "新手使用指引設計",
           problem: "早期試用者不清楚操作方式，導致探索意願低。",
           thought: "需提供使用前引導說明，降低進入障礙。",
           solution: "新增進入頁面，簡要說明互動方式與使用流程。"
         },
         {
-          icon: FaMobileAlt,
-          iconColor: "emerald",
           title: "行動裝置互動體驗優化",
           problem: "手機畫面空間有限，圖釘重疊造成操作困難。",
           thought: "需導入縮放與拖曳功能，提升使用彈性與可點擊性。",
           solution: "加入地圖放大與拖曳機制，確保每個圖釘可順利點擊與觀看。"
         },
         {
-          icon: FaImage,
-          iconColor: "orange",
           title: "圖片載入效能優化",
           problem: "地圖圖像素材數量大，影響初次載入速度。",
           thought: "圖片需控制檔案大小並避免一次性全載。",
@@ -123,32 +110,24 @@ const projectContents = {
       title: "UX 決策與挑戰",
       items: [
         {
-          icon: FaClipboardList,
-          iconColor: "blue",
           title: "選項設計簡化",
           problem: "原始企劃設定多選項題目，增加作答難度與製作成本。",
           thought: "使用者面對過多選項可能造成認知疲勞，導致中途放棄。",
           solution: "建議改為統一 A/B 題型，簡化操作流程與出題成本。"
         },
         {
-          icon: FaUserTie,
-          iconColor: "lime",
           title: "使用者資料填寫優化",
           problem: "測驗前要求填寫大量個資，降低使用意願。",
           thought: "在無信任基礎下先填資料，跳出率高。",
           solution: "建議非必要資料改為選填，保留轉換率與數據收集彈性。"
         },
         {
-          icon: FaMobileAlt,
-          iconColor: "emerald",
           title: "手機版視覺與效能取捨",
           problem: "原設計在手機版上動畫與圖片過重，影響效能。",
           thought: "行動裝置應優先考慮效能與操作流程清晰。",
           solution: "建議精簡視覺內容並刪減部分 JS 效果，提升載入速度。"
         },
         {
-          icon: FaChartLine,
-          iconColor: "orange",
           title: "進度提示設計",
           problem: "使用者填答過程無法掌握進度，易半途放棄。",
           thought: "缺乏預期感會提升焦慮，降低完成率。",
@@ -162,7 +141,72 @@ const projectContents = {
       title: "收穫與反思",
       content: "這次專案讓我更深刻理解 UX 決策在實務開發中的重要性。面對多方角色與意見差異，我學會如何以使用者體驗為出發點，提出具體、可落地的建議，並透過快速原型試作與簡化流程設計，有效推動整體產品進展。"
     }
+  },
+  "前端小型作品集": {
+  overview: {
+    icon: FaCode,
+    iconColor: "gray",
+    title: "專案概述",
+    content: "收錄多個以 HTML、CSS、JavaScript、Bootstrap 和 jQuery 製作的小型互動網頁，涵蓋動畫、表單、模擬 UI 等實作範例，是我在學習前端過程中的階段性成果展示。",
+    url: "https://amilycc.github.io/CodeShowcase/"
+  },
+  role: {
+    icon: FaUserTie,
+    iconColor: "purple",
+    title: "我的角色",
+    content: "所有作品皆由我獨立完成，涵蓋排版設計、動態效果、元件操作與互動邏輯，藉由實作各種場景累積開發經驗與程式邏輯能力。"
+  },
+  process: {
+    icon: FaChartLine,
+    iconColor: "emerald",
+    title: "專案流程簡述",
+    steps: [
+      "根據主題挑選互動元件或特效作為挑戰目標",
+      "使用 HTML、CSS 建立版面與動畫邏輯",
+      "結合 JavaScript / jQuery 撰寫互動邏輯",
+      "部分使用 Bootstrap 加速響應式設計開發",
+      "成果整合於 GitHub Pages 作為展示平台"
+    ]
+  },
+  challenges: {
+    icon: FaLightbulb,
+    iconColor: "amber",
+    title: "開發的學習與觀察",
+    items: [
+      {
+        title: "MVC 架構練習",
+        problem: "早期作品將結構與邏輯混寫，導致維護與除錯困難。",
+        thought: "良好的前端專案結構有助於後續擴充與邏輯拆分。",
+        solution: "開始將資料、畫面與控制邏輯分層，練習用 MVC 思維規劃前端結構。"
+      },
+      {
+        title: "jQuery 與 Bootstrap 實作應用",
+        problem: "初期對第三方套件操作不熟，常語法重複或誤用元件。",
+        thought: "靈活運用現成套件是提升開發效率的關鍵能力之一。",
+        solution: "實作常見 UI 元件與互動邏輯，掌握 jQuery 操作與 Bootstrap 元件應用與限制。"
+      },
+      {
+        title: "非同步 async 操作練習",
+        problem: "初期對非同步流程掌握不佳，導致資料順序錯誤或畫面異常。",
+        thought: "理解 async/await 與 Promise 流程是處理資料載入的核心技能。",
+        solution: "練習串接公開 API，使用 async 寫法優化資料處理流程與錯誤捕捉邏輯。"
+      },
+      {
+        title: "響應式練習",
+        problem: "早期作品在手機上常出現跑版或內容溢出。",
+        thought: "穩定的版面排版需依裝置斷點規劃不同顯示邏輯。",
+        solution: "初期優先考量以RWD設計邏輯為基礎，輔以 Bootstrap Grid 與 相對定位等實作跨裝置調整。"
+      }
+    ]
+  },
+  reflection: {
+    icon: FaLightbulb,
+    iconColor: "blue",
+    title: "收穫與反思",
+    content: "透過這些小型作品，我從語法學習轉向結構設計與互動體驗實作，逐步建立了前端邏輯、模組化思維與版面敏感度，也更熟悉各類常用元件與非同步資料處理方式。這些專案是我技術成長的重要里程碑。"
   }
+}
+
 };
 
 export default function Modal() {
@@ -286,7 +330,7 @@ export default function Modal() {
                     <span className="text-sm md:text-base">{item.thought}</span>
                   </p>
                   <p className="flex items-start gap-2">
-                    <span className="text-emerald-300 font-medium whitespace-nowrap text-sm md:text-base">建議：</span>
+                    <span className="text-emerald-300 font-medium whitespace-nowrap text-sm md:text-base">實作：</span>
                     <span className="text-sm md:text-base">{item.solution}</span>
                   </p>
                 </div>
