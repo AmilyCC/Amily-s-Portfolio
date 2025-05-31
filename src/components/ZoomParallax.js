@@ -1,10 +1,35 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 const ZoomParallax = ({ children, className = '' }) => {
   const ref = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
+  // 使用 Intersection Observer 控制可見性
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px'
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  // 檢測裝置類型
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -21,24 +46,40 @@ const ZoomParallax = ({ children, className = '' }) => {
   });
 
   // 移動到頂層的 transform
-  const mobileScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 1.1]);
+  const mobileScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 1.05]);
   const mobileOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0]);
-  const desktopScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 1.2]);
+  const desktopScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 1.1]);
   const desktopOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0]);
 
-  // 根據裝置類型選擇動畫參數
-  const scale = isMobile ? mobileScale : desktopScale;
-  const opacity = isMobile ? mobileOpacity : desktopOpacity;
-  const springConfig = isMobile 
-    ? { stiffness: 50, damping: 20, mass: 0.5 }
-    : { stiffness: 100, damping: 30, mass: 0.5 };
+  // 使用 useMemo 優化動畫配置
+  const animationConfig = useMemo(() => {
+    const baseConfig = {
+      scale: isMobile ? mobileScale : desktopScale,
+      opacity: isMobile ? mobileOpacity : desktopOpacity,
+      springConfig: isMobile 
+        ? { stiffness: 40, damping: 15, mass: 0.5 }
+        : { stiffness: 70, damping: 20, mass: 0.5 }
+    };
 
-  // 使用 spring 動畫使縮放更加順暢
-  const springScale = useSpring(scale, springConfig);
-  const springOpacity = useSpring(opacity, springConfig);
+    return baseConfig;
+  }, [isMobile, mobileScale, mobileOpacity, desktopScale, desktopOpacity]);
+
+  const springScale = useSpring(animationConfig.scale, animationConfig.springConfig);
+  const springOpacity = useSpring(animationConfig.opacity, animationConfig.springConfig);
 
   return (
-    <div ref={ref} className={`relative h-screen max-h-[1000px] overflow-hidden ${className}`}>
+    <div 
+      ref={ref} 
+      className={`relative h-screen max-h-[1000px] overflow-hidden ${className}`}
+      style={{
+        willChange: 'transform',
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+        perspective: 1000,
+        WebkitPerspective: 1000
+      }}
+    >
       <motion.div
         style={{
           scale: springScale,
@@ -50,9 +91,17 @@ const ZoomParallax = ({ children, className = '' }) => {
           backfaceVisibility: 'hidden',
           WebkitBackfaceVisibility: 'hidden',
           perspective: 1000,
-          WebkitPerspective: 1000
+          WebkitPerspective: 1000,
+          transform: 'translateZ(0)'
         }}
         className="w-full h-full flex items-center justify-center overflow-hidden"
+        initial={false}
+        animate={isVisible ? 'visible' : 'hidden'}
+        variants={{
+          visible: { opacity: 1 },
+          hidden: { opacity: 0 }
+        }}
+        transition={{ duration: 0.3 }}
       >
         {children}
       </motion.div>

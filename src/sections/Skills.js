@@ -51,53 +51,46 @@ const CustomTick = ({ payload, x, y, textAnchor }) => {
 // 標題組件
 const AnimatedTitle = ({ sectionProgress }) => {
   const titleRef = React.useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px'
+      }
+    );
 
-  const getAnimationPoints = () => {
-    if (isMobile) {
-      return {
-        timePoints: [0, 0.05, 0.2, 0.8, 0.9, 1],
-        scalePoints: [0.3, 0.5, 1, 1, 0.8, 0.3],
-        opacityPoints: [0, 0.5, 1, 1, 0.8, 0],
-        yPoints: [100, 20, 0, 0, -20, -100]
-      };
+    if (titleRef.current) {
+      observer.observe(titleRef.current);
     }
-    return {
-      timePoints: [0, 0.1, 0.3, 0.7, 0.8, 1],
-      scalePoints: [0.3, 0.5, 1, 1, 0.8, 0.3],
-      opacityPoints: [0, 0.5, 1, 1, 0.8, 0],
-      yPoints: [100, 20, 0, 0, -20, -100]
-    };
-  };
 
-  const { timePoints, scalePoints, opacityPoints, yPoints } = getAnimationPoints();
+    return () => {
+      if (titleRef.current) {
+        observer.unobserve(titleRef.current);
+      }
+    };
+  }, []);
 
   const scale = useTransform(
     sectionProgress,
-    timePoints,
-    scalePoints,
+    [0, 0.1, 0.4, 0.6, 0.7, 1],
+    [0.3, 0.5, 1, 1, 0.8, 0.3],
     { clamp: false }
   );
   const opacity = useTransform(
     sectionProgress,
-    timePoints,
-    opacityPoints,
+    [0, 0.1, 0.4, 0.6, 0.7, 1],
+    [0, 0.5, 1, 1, 0.8, 0],
     { clamp: false }
   );
   const y = useTransform(
     sectionProgress,
-    timePoints,
-    yPoints,
+    [0, 0.1, 0.4, 0.6, 0.7, 1],
+    [100, 20, 0, 0, -20, -100],
     { clamp: false }
   );
 
@@ -107,9 +100,18 @@ const AnimatedTitle = ({ sectionProgress }) => {
       style={{
         scale,
         opacity,
-        y
+        y,
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)'
       }}
       className="text-4xl sm:text-5xl font-bold text-center text-white mb-12"
+      initial={false}
+      animate={isVisible ? 'visible' : 'hidden'}
+      variants={{
+        visible: { opacity: 1 },
+        hidden: { opacity: 0 }
+      }}
+      transition={{ duration: 0.3 }}
     >
       Skills
     </motion.h2>
@@ -119,7 +121,30 @@ const AnimatedTitle = ({ sectionProgress }) => {
 // 技能卡片組件
 const SkillCard = ({ skill, index, sectionProgress }) => {
   const cardRef = React.useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px'
+      }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -133,52 +158,31 @@ const SkillCard = ({ skill, index, sectionProgress }) => {
 
   // 計算初始位置（從中心向外）
   const isLeftSide = index === 0 || index === 2;
-  const initialX = isLeftSide ? 300 : -300;
-  const initialY = isLeftSide ? -100 : 100;
-
-  const getAnimationPoints = () => {
-    if (isMobile) {
-      return {
-        timePoints: [0, 0.05, 0.2, 0.8, 0.9, 1],
-        scalePoints: [0.3, 0.5, 1, 1, 0.8, 0.3],
-        opacityPoints: [0, 0.5, 1, 1, 0.8, 0],
-        xPoints: [initialX, initialX * 0.3, 0, 0, -initialX * 0.3, -initialX],
-        yPoints: [initialY, initialY * 0.3, 0, 0, -initialY * 0.3, -initialY]
-      };
-    }
-    return {
-      timePoints: [0, 0.2, 0.3, 0.7, 0.8, 1],
-      scalePoints: [0.3, 0.5, 1, 1, 0.8, 0.3],
-      opacityPoints: [0, 0.5, 1, 1, 0.8, 0],
-      xPoints: [initialX, initialX * 0.3, 0, 0, -initialX * 0.3, -initialX],
-      yPoints: [initialY, initialY * 0.3, 0, 0, -initialY * 0.3, -initialY]
-    };
-  };
-
-  const { timePoints, scalePoints, opacityPoints, xPoints, yPoints } = getAnimationPoints();
+  const initialX = isLeftSide ? (isMobile ? 100 : 200) : (isMobile ? -100 : -200);
+  const initialY = isLeftSide ? -50 : 50;
 
   const scale = useTransform(
     sectionProgress,
-    timePoints,
-    scalePoints,
+    [0, 0.2, 0.3, 0.7, 0.8, 1],
+    [0.3, 0.5, 1, 1, 0.8, 0.3],
     { clamp: false }
   );
   const opacity = useTransform(
     sectionProgress,
-    timePoints,
-    opacityPoints,
+    [0, 0.2, 0.3, 0.7, 0.8, 1],
+    [0, 0.5, 1, 1, 0.8, 0],
     { clamp: false }
   );
   const x = useTransform(
     sectionProgress,
-    timePoints,
-    xPoints,
+    [0, 0.2, 0.3, 0.7, 0.8, 1],
+    [initialX, initialX * 0.3, 0, 0, -initialX * 0.3, -initialX],
     { clamp: false }
   );
   const y = useTransform(
     sectionProgress,
-    timePoints,
-    yPoints,
+    [0, 0.2, 0.3, 0.7, 0.8, 1],
+    [initialY, initialY * 0.3, 0, 0, -initialY * 0.3, -initialY],
     { clamp: false }
   );
 
@@ -190,9 +194,18 @@ const SkillCard = ({ skill, index, sectionProgress }) => {
         opacity,
         x,
         y,
-        borderColor: skill.colorAlpha
+        borderColor: skill.colorAlpha,
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)'
       }}
       className="bg-black/40 backdrop-blur-sm border border-white/20 p-4 h-full flex flex-col rounded-[0.5em]"
+      initial={false}
+      animate={isVisible ? 'visible' : 'hidden'}
+      variants={{
+        visible: { opacity: 1 },
+        hidden: { opacity: 0 }
+      }}
+      transition={{ duration: 0.3 }}
     >
       <div className="flex items-center gap-3 mb-2">
         <span className="text-2xl">{skill.icon}</span>
