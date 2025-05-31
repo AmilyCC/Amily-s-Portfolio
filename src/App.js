@@ -97,10 +97,10 @@ function App() {
             <div className="mt-[-10vh] md:mt-[-10vh] xl:mt-[-20vh] relative z-10">
               <Skills />
             </div>
-            <div className="mt-[-15vh] md:mt-[-10vh] xl:mt-[-20vh] relative z-20">
+            <div className="mt-[0] md:mt-[-10vh] xl:mt-[-10vh] relative z-20">
               <Works />
             </div>
-            <div className="mt-[-10vh] md:mt-[-20vh] lg:mt-[-20vh] relative z-30">
+            <div className="mt-[0]  relative z-30">
               <ZoomParallax>
                 <Contact />
               </ZoomParallax>

@@ -8,7 +8,7 @@ import { getSkillsData, getRadarData, getLineBreak, getTextPosition } from "../c
 import { FaCode, FaServer, FaTools, FaDatabase } from "react-icons/fa";
 import { SiJavascript, SiTypescript, SiReact, SiNodedotjs, SiExpress, SiMongodb, SiMysql, SiGit, SiDocker } from "react-icons/si";
 
-// 雷達圖標籤組件
+// 雷達圖標籤區塊
 const CustomTick = ({ payload, x, y, textAnchor }) => {
   const skillsData = getSkillsData();
   const skill = skillsData.find(s => s.name === payload.value);
@@ -48,49 +48,49 @@ const CustomTick = ({ payload, x, y, textAnchor }) => {
   );
 };
 
-// 標題組件
-const AnimatedTitle = ({ sectionProgress }) => {
+// 標題區塊
+const AnimatedTitle = ({ sectionProgress, isMobile }) => {
   const titleRef = React.useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const { scrollYProgress: titleProgress } = useScroll({
+    target: titleRef,
+    offset: ["start end", "end start"]
+  });
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '50px'
-      }
-    );
-
-    if (titleRef.current) {
-      observer.observe(titleRef.current);
+  const getAnimationPoints = () => {
+    if (isMobile) {
+      return {
+        timePoints: [0, 0.2, 0.3, 0.7, 0.9, 1],
+        scalePoints: [0.8, 0.9, 1, 1, 0.9, 0.8],
+        opacityPoints: [0, 0.5, 1, 1, 0.5, 0],
+        yPoints: [0, 0, 0, 0, 0, 0]
+      };
     }
-
-    return () => {
-      if (titleRef.current) {
-        observer.unobserve(titleRef.current);
-      }
+    return {
+      timePoints: [0, 0.1, 0.3, 0.7, 0.8, 1],
+      scalePoints: [0, 0.5, 1, 1, 0.8, 0.3],
+      opacityPoints: [0, 0.5, 1, 1, 0.8, 0],
+      yPoints: [100, 20, 0, 0, -20, -100]
     };
-  }, []);
+  };
+
+  const { timePoints, scalePoints, opacityPoints, yPoints } = getAnimationPoints();
 
   const scale = useTransform(
-    sectionProgress,
-    [0, 0.1, 0.4, 0.6, 0.7, 1],
-    [0.3, 0.5, 1, 1, 0.8, 0.3],
+    isMobile ? titleProgress : sectionProgress,
+    timePoints,
+    scalePoints,
     { clamp: false }
   );
   const opacity = useTransform(
-    sectionProgress,
-    [0, 0.1, 0.4, 0.6, 0.7, 1],
-    [0, 0.5, 1, 1, 0.8, 0],
+    isMobile ? titleProgress : sectionProgress,
+    timePoints,
+    opacityPoints,
     { clamp: false }
   );
   const y = useTransform(
-    sectionProgress,
-    [0, 0.1, 0.4, 0.6, 0.7, 1],
-    [100, 20, 0, 0, -20, -100],
+    isMobile ? titleProgress : sectionProgress,
+    timePoints,
+    yPoints,
     { clamp: false }
   );
 
@@ -100,89 +100,81 @@ const AnimatedTitle = ({ sectionProgress }) => {
       style={{
         scale,
         opacity,
-        y,
-        willChange: 'transform, opacity',
-        transform: 'translateZ(0)'
+        y
       }}
       className="text-4xl sm:text-5xl font-bold text-center text-white mb-12"
-      initial={false}
-      animate={isVisible ? 'visible' : 'hidden'}
-      variants={{
-        visible: { opacity: 1 },
-        hidden: { opacity: 0 }
-      }}
-      transition={{ duration: 0.3 }}
     >
       Skills
     </motion.h2>
   );
 };
 
-// 技能卡片組件
-const SkillCard = ({ skill, index, sectionProgress }) => {
+// 技能卡片區塊
+const SkillCard = ({ skill, index, sectionProgress, isMobile }) => {
   const cardRef = React.useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '50px'
-      }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const { scrollYProgress: cardProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"]
+  });
 
   // 計算初始位置（從中心向外）
-  const isLeftSide = index === 0 || index === 2;
-  const initialX = isLeftSide ? (isMobile ? 100 : 200) : (isMobile ? -100 : -200);
-  const initialY = isLeftSide ? -50 : 50;
+  let initialX = 0;
+  let initialY = 0;
+
+  if (index === 0) {
+    initialX = 500;
+    initialY = -100;
+  } else if (index === 1 || index === 2) {
+    initialX = -500;
+    initialY = 100;
+  } else if (index === 3 || index === 4) {
+    initialX = -500;
+    initialY = -100;
+  }
+
+  const getCardAnimationPoints = () => {
+    if (isMobile) {
+      return {
+        timePoints: [0, 0.2, 0.3, 0.7, 0.9, 1],
+        scalePoints: [0.8, 0.9, 1, 1, 0.9, 0.8],
+        opacityPoints: [0, 0.5, 1, 1, 0.5, 0],
+        xPoints: [0, 0, 0, 0, 0, 0],
+        yPoints: [0, 0, 0, 0, 0, 0]
+      };
+    }
+    return {
+      timePoints: [0, 0.2, 0.3, 0.7, 0.9, 1],
+      scalePoints: [0, 0.5, 1, 1, 1.8, 2.0],
+      opacityPoints: [0, 0.5, 1, 1, 0.1, 0],
+      xPoints: [initialX, initialX * 0.3, 0, 0, -initialX * 1.3, -initialX*2],
+      yPoints: [initialY, initialY * 0.3, 0, 0, -initialY * 1.3, -initialY*2]
+    };
+  };
+
+  const { timePoints, scalePoints, opacityPoints, xPoints, yPoints } = getCardAnimationPoints();
 
   const scale = useTransform(
-    sectionProgress,
-    [0, 0.2, 0.3, 0.7, 0.8, 1],
-    [0.3, 0.5, 1, 1, 0.8, 0.3],
+    isMobile ? cardProgress : sectionProgress,
+    timePoints,
+    scalePoints,
     { clamp: false }
   );
   const opacity = useTransform(
-    sectionProgress,
-    [0, 0.2, 0.3, 0.7, 0.8, 1],
-    [0, 0.5, 1, 1, 0.8, 0],
+    isMobile ? cardProgress : sectionProgress,
+    timePoints,
+    opacityPoints,
     { clamp: false }
   );
   const x = useTransform(
-    sectionProgress,
-    [0, 0.2, 0.3, 0.7, 0.8, 1],
-    [initialX, initialX * 0.3, 0, 0, -initialX * 0.3, -initialX],
+    isMobile ? cardProgress : sectionProgress,
+    timePoints,
+    xPoints,
     { clamp: false }
   );
   const y = useTransform(
-    sectionProgress,
-    [0, 0.2, 0.3, 0.7, 0.8, 1],
-    [initialY, initialY * 0.3, 0, 0, -initialY * 0.3, -initialY],
+    isMobile ? cardProgress : sectionProgress,
+    timePoints,
+    yPoints,
     { clamp: false }
   );
 
@@ -194,18 +186,9 @@ const SkillCard = ({ skill, index, sectionProgress }) => {
         opacity,
         x,
         y,
-        borderColor: skill.colorAlpha,
-        willChange: 'transform, opacity',
-        transform: 'translateZ(0)'
+        borderColor: skill.colorAlpha
       }}
       className="bg-black/40 backdrop-blur-sm border border-white/20 p-4 h-full flex flex-col rounded-[0.5em]"
-      initial={false}
-      animate={isVisible ? 'visible' : 'hidden'}
-      variants={{
-        visible: { opacity: 1 },
-        hidden: { opacity: 0 }
-      }}
-      transition={{ duration: 0.3 }}
     >
       <div className="flex items-center gap-3 mb-2">
         <span className="text-2xl">{skill.icon}</span>
@@ -239,51 +222,55 @@ const SkillCard = ({ skill, index, sectionProgress }) => {
   );
 };
 
-// 雷達圖組件
+// 雷達圖區塊
 const RadarChartComponent = ({ height, isMobile, sectionProgress }) => {
   const radarRef = React.useRef(null);
+  const { scrollYProgress: radarProgress } = useScroll({
+    target: radarRef,
+    offset: ["start end", "end start"]
+  });
 
-  const getAnimationPoints = () => {
+  const getRadarAnimationPoints = () => {
     if (isMobile) {
       return {
-        timePoints: [0, 0.05, 0.2, 0.8, 0.9, 1],
-        scalePoints: [0.3, 0.5, 1, 1, 0.8, 0.3],
-        opacityPoints: [0, 0.5, 1, 1, 0.8, 0],
-        xPoints: [300, 100, 0, 0, -100, -300],
-      yPoints: [-100, -50, 0, 0, 50, 100]
+        timePoints: [0, 0.2, 0.3, 0.7, 0.9, 1],
+        scalePoints: [0.8, 0.9, 1, 1, 0.9, 0.8],
+        opacityPoints: [0, 0.5, 1, 1, 0.5, 0],
+        xPoints: [0, 0, 0, 0, 0, 0],
+        yPoints: [0, 0, 0, 0, 0, 0]
       };
     }
     return {
       timePoints: [0, 0.2, 0.3, 0.7, 0.8, 1],
-      scalePoints: [0.3, 0.5, 1, 1, 0.8, 0.3],
-      opacityPoints: [0, 0.5, 1, 1, 0.8, 0],
-      xPoints: [500, 100, 0, 0, -100, -500],
-      yPoints: [-100, -50, 0, 0, 50, 100]
+      scalePoints: [0, 0.5, 1, 1, 1.5, 2.0],
+      opacityPoints: [0, 0.5, 1, 1, 0.2, 0],
+      xPoints: [500, 100, 0, 0, -130, -1000],
+      yPoints: [100, 50, 0, 0, 65, 200]
     };
   };
 
-  const { timePoints, scalePoints, opacityPoints, xPoints, yPoints } = getAnimationPoints();
+  const { timePoints, scalePoints, opacityPoints, xPoints, yPoints } = getRadarAnimationPoints();
 
   const scale = useTransform(
-    sectionProgress,
+    isMobile ? radarProgress : sectionProgress,
     timePoints,
     scalePoints,
     { clamp: false }
   );
   const opacity = useTransform(
-    sectionProgress,
+    isMobile ? radarProgress : sectionProgress,
     timePoints,
     opacityPoints,
     { clamp: false }
   );
   const x = useTransform(
-    sectionProgress,
+    isMobile ? radarProgress : sectionProgress,
     timePoints,
     xPoints,
     { clamp: false }
   );
   const y = useTransform(
-    sectionProgress,
+    isMobile ? radarProgress : sectionProgress,
     timePoints,
     yPoints,
     { clamp: false }
@@ -334,7 +321,7 @@ const RadarChartComponent = ({ height, isMobile, sectionProgress }) => {
   );
 };
 
-// 主要組件
+// 主要區塊
 export default function Skills() {
   const [radarHeight, setRadarHeight] = useState(550);
   const [isMobile, setIsMobile] = useState(false);
@@ -350,7 +337,7 @@ export default function Skills() {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      setIsMobile(width < 768);
+      setIsMobile(width <= 1024);
       
       const baseCardHeight = {
         default: 'auto',
@@ -374,7 +361,7 @@ export default function Skills() {
   return (
     <section ref={sectionRef} className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="relative max-w-6xl mx-auto">
-        <AnimatedTitle sectionProgress={sectionProgress} />
+        <AnimatedTitle sectionProgress={sectionProgress} isMobile={isMobile} />
 
         {/* 主要內容區塊 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -382,7 +369,7 @@ export default function Skills() {
           <div className="space-y-4">
             <RadarChartComponent 
               height={radarHeight} 
-              isMobile={isMobile} 
+              isMobile={isMobile}
               sectionProgress={sectionProgress}
             />
             {/* 左側卡片 */}
@@ -390,8 +377,9 @@ export default function Skills() {
               <SkillCard 
                 key={skillsData[0].name} 
                 skill={skillsData[0]} 
-                index={0} 
+                index={0}
                 sectionProgress={sectionProgress}
+                isMobile={isMobile}
               />
             </div>
           </div>
@@ -402,8 +390,9 @@ export default function Skills() {
               <div key={skill.name} style={{ height: isMobile ? 'auto' : `${cardHeight}px` }}>
                 <SkillCard 
                   skill={skill} 
-                  index={index + 1} 
+                  index={index + 1}
                   sectionProgress={sectionProgress}
+                  isMobile={isMobile}
                 />
               </div>
             ))}
