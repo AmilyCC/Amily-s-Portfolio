@@ -12,7 +12,7 @@ import { SiJavascript, SiTypescript, SiReact, SiNodedotjs, SiExpress, SiMongodb,
 const CustomTick = ({ payload, x, y, textAnchor }) => {
   const skillsData = getSkillsData();
   const skill = skillsData.find(s => s.name === payload.value);
-  const isMobile = window.innerWidth < 768;
+  const isMobile = window.innerWidth < 1280;
   
   const lines = getLineBreak(payload.value);
   const position = getTextPosition(payload.value);
@@ -144,10 +144,10 @@ const SkillCard = ({ skill, index, sectionProgress, isMobile }) => {
     }
     return {
       timePoints: [0, 0.2, 0.3, 0.7, 0.9, 1],
-      scalePoints: [0, 0.5, 1, 1, 1.8, 2.0],
+      scalePoints: [0, 0.5, 1, 1, 1.5, 1.8],
       opacityPoints: [0, 0.5, 1, 1, 0.1, 0],
-      xPoints: [initialX, initialX * 0.3, 0, 0, -initialX * 1.3, -initialX*2],
-      yPoints: [initialY, initialY * 0.3, 0, 0, -initialY * 1.3, -initialY*2]
+      xPoints: [initialX * 0.5, initialX * 0.2, 0, 0, -initialX * 0.8, -initialX],
+      yPoints: [initialY * 0.5, initialY * 0.2, 0, 0, -initialY * 0.8, -initialY]
     };
   };
 
@@ -186,7 +186,8 @@ const SkillCard = ({ skill, index, sectionProgress, isMobile }) => {
         opacity,
         x,
         y,
-        borderColor: skill.colorAlpha
+        borderColor: skill.colorAlpha,
+        willChange: 'transform, opacity'
       }}
       className="bg-black/40 backdrop-blur-sm border border-white/20 p-4 h-full flex flex-col rounded-[0.5em]"
     >
@@ -242,10 +243,10 @@ const RadarChartComponent = ({ height, isMobile, sectionProgress }) => {
     }
     return {
       timePoints: [0, 0.2, 0.3, 0.7, 0.8, 1],
-      scalePoints: [0, 0.5, 1, 1, 1.5, 2.0],
+      scalePoints: [0, 0.5, 1, 1, 1.5, 1.8],
       opacityPoints: [0, 0.5, 1, 1, 0.2, 0],
-      xPoints: [500, 100, 0, 0, -130, -1000],
-      yPoints: [100, 50, 0, 0, 65, 200]
+      xPoints: [300, 100, 0, 0, -100, -300],
+      yPoints: [50, 25, 0, 0, 25, 50]
     };
   };
 
@@ -284,7 +285,8 @@ const RadarChartComponent = ({ height, isMobile, sectionProgress }) => {
         opacity,
         x,
         y,
-        height: isMobile ? 'auto' : `${height}px`
+        height: isMobile ? 'auto' : `${height}px`,
+        willChange: 'transform, opacity'
       }}
       className="bg-black/40 backdrop-blur-sm p-6 border border-white/10 rounded-[0.5em]"
     >
@@ -337,13 +339,13 @@ export default function Skills() {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      setIsMobile(width <= 1024);
+      setIsMobile(width < 1280);
       
       const baseCardHeight = {
         default: 'auto',
         md: 250,
-        lg: 250
-      }[width >= 1024 ? 'lg' : width >= 768 ? 'md' : 'default'];
+        xl: 250
+      }[width > 1280 ? 'xl' : width >= 768 ? 'md' : 'default'];
       
       const cardCount = 3;
       const gapSize = 16;
@@ -364,7 +366,7 @@ export default function Skills() {
         <AnimatedTitle sectionProgress={sectionProgress} isMobile={isMobile} />
 
         {/* 主要內容區塊 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           {/* 左側區塊 */}
           <div className="space-y-4">
             <RadarChartComponent 

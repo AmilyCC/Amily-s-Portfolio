@@ -94,10 +94,10 @@ function App() {
             <ZoomParallax>
               <Hero />
             </ZoomParallax>
-            <div className="mt-[-10vh] md:mt-[-10vh] xl:mt-[-20vh] relative z-10">
+            <div className="mt-[-10vh] lg:mt-[0] xl:mt-[10vh] relative z-10">
               <Skills />
             </div>
-            <div className="mt-[0] md:mt-[-10vh] xl:mt-[-10vh] relative z-20">
+            <div className="mt-[0] lg:mt-[-10vh] xl:mt-[-10vh] relative z-20">
               <Works />
             </div>
             <div className="mt-[0]  relative z-30">

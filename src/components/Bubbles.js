@@ -10,7 +10,7 @@ const Bubble = ({ delay, duration, size, left }) => {
         height: size,
         left: `${left}%`,
         bottom: '-10%',
-        zIndex: 10,
+        zIndex: 50,
       }}
       initial={{ y: 0, opacity: 0 }}
       animate={{ 

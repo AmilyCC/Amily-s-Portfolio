@@ -48,7 +48,7 @@ export default function Works() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 1024);
+      setIsMobile(window.innerWidth < 1280);
     };
     
     checkMobile();
@@ -157,11 +157,11 @@ function WorkCard({ project, index, onReadMore, sectionProgress, isMobile }) {
     }
     return {
       timePoints: [0, 0.2, 0.3, 0.7, 0.9, 1],
-      scalePoints: [0, 0.2, 1, 1, 1.5, 1.8],
+      scalePoints: [0, 0.5, 1, 1, 1.5, 1.8],
       opacityPoints: [0, 0.5, 1, 1, 0.1, 0],
       xPoints: {
-        image: [isEven ? 500 : -500, isEven ? 200 : -200, 0, 0, isEven ? -200 : 200, isEven ? -500 : 500],
-        text: [isEven ? -500 : 500, isEven ? -200 : 200, 0, 0, isEven ? 200 : -200, isEven ? 500 : -500]
+        image: [isEven ? 300 : -300, isEven ? 100 : -100, 0, 0, isEven ? -100 : 100, isEven ? -300 : 300],
+        text: [isEven ? -300 : 300, isEven ? -100 : 100, 0, 0, isEven ? 100 : -100, isEven ? 300 : -300]
       }
     };
   };
@@ -211,39 +211,42 @@ function WorkCard({ project, index, onReadMore, sectionProgress, isMobile }) {
   return (
     <motion.div
       ref={ref}
-      className={`flex flex-col lg:flex-row gap-8 md:gap-12 items-center ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} group`}
+      className={`flex flex-col xl:flex-row gap-8 md:gap-12 items-center ${isEven ? 'xl:flex-row' : 'xl:flex-row-reverse'} group`}
+      style={{ willChange: 'transform' }}
     >
       <motion.div 
-        className="w-full lg:w-1/2"
+        className="w-full xl:w-1/2"
         style={{
           scale: imageScale,
           opacity: imageOpacity,
-          x: imageX
+          x: imageX,
+          willChange: 'transform, opacity'
         }}
       >
         <div className="relative overflow-hidden rounded-xl max-w-[500px] md:max-w-[600px] mx-auto aspect-[4/3]">
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover transform md:group-hover:scale-110 transition-transform duration-500"
+            className="w-full h-full object-cover transform xl:group-hover:scale-110 transition-transform duration-700 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 xl:group-hover:opacity-100 transition-opacity duration-500 ease-out" />
         </div>
       </motion.div>
 
       <motion.div 
-        className="w-full lg:w-1/2"
+        className="w-full xl:w-1/2"
         style={{
           scale: textScale,
           opacity: textOpacity,
-          x: textX
+          x: textX,
+          willChange: 'transform, opacity'
         }}
       >
         <div className="relative p-6 md:p-10 max-w-[500px] md:max-w-[600px] mx-auto bg-black/20 backdrop-blur-sm rounded-xl border border-white/10 md:aspect-[4/3] flex flex-col">
-          <div className="absolute top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 w-full md:w-8 md:group-hover:w-full transition-all duration-500" />
+          <div className="absolute top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 w-full xl:w-8 xl:group-hover:w-full transition-all duration-700 ease-out" />
           <div className="space-y-6 md:space-y-8 flex-1 flex flex-col justify-between">
             <div className="space-y-4 md:space-y-6">
-              <h3 className="text-2xl md:text-3xl font-bold text-white md:group-hover:text-blue-400 transition-colors duration-300">
+              <h3 className="text-2xl md:text-3xl font-bold text-white xl:group-hover:text-blue-400 transition-colors duration-500 ease-out">
                 {project.title}
               </h3>
               <p className="text-white/80 text-base md:text-lg leading-relaxed">
@@ -273,12 +276,12 @@ function WorkCard({ project, index, onReadMore, sectionProgress, isMobile }) {
 
               <button
                 onClick={onReadMore}
-                className="inline-flex items-center text-white/80 hover:text-white text-base md:text-lg font-medium tracking-wide transition-colors duration-200"
+                className="inline-flex items-center text-white/80 hover:text-white text-base md:text-lg font-medium tracking-wide transition-colors duration-300 ease-out"
               >
                 Read more
                 <span className="ml-2 md:ml-3 relative w-8 h-4 overflow-hidden">
-                  <span className="absolute inset-0 transform md:group-hover:translate-x-[200%] transition-transform duration-500">→</span>
-                  <span className="absolute inset-0 -translate-x-[200%] md:group-hover:translate-x-0 transition-transform duration-500">→</span>
+                  <span className="absolute inset-0 transform xl:group-hover:translate-x-[200%] transition-transform duration-500 ease-out">→</span>
+                  <span className="absolute inset-0 -translate-x-[200%] xl:group-hover:translate-x-0 transition-transform duration-500 ease-out">→</span>
                 </span>
               </button>
             </div>
