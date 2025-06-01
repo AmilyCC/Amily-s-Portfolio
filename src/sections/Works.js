@@ -241,7 +241,10 @@ function WorkCard({ project, index, onReadMore, sectionProgress, isMobile }) {
           willChange: 'transform, opacity'
         }}
       >
-        <div className="relative p-6 md:p-10 max-w-[500px] md:max-w-[600px] mx-auto bg-black/20 backdrop-blur-sm rounded-xl border border-white/10 md:aspect-[4/3] flex flex-col">
+        <div 
+          className="relative p-6 md:p-10 max-w-[500px] md:max-w-[600px] mx-auto bg-black/20 backdrop-blur-sm rounded-xl border border-white/10 md:aspect-[4/3] flex flex-col cursor-pointer"
+          onClick={onReadMore}
+        >
           <div className="absolute top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 w-full xl:w-8 xl:group-hover:w-full transition-all duration-700 ease-out" />
           <div className="space-y-6 md:space-y-8 flex-1 flex flex-col justify-between">
             <div className="space-y-4 md:space-y-6">
@@ -273,16 +276,13 @@ function WorkCard({ project, index, onReadMore, sectionProgress, isMobile }) {
                 })}
               </div>
 
-              <button
-                onClick={onReadMore}
-                className="inline-flex items-center text-white/80 hover:text-white text-base md:text-lg font-medium tracking-wide transition-colors duration-300 ease-out"
-              >
+              <div className="inline-flex items-center text-white/80 group-hover:text-white text-base md:text-lg font-medium tracking-wide transition-colors duration-300 ease-out">
                 Read more
                 <span className="ml-2 md:ml-3 relative w-8 h-4 overflow-hidden">
                   <span className="absolute inset-0 transform xl:group-hover:translate-x-[200%] transition-transform duration-500 ease-out">→</span>
                   <span className="absolute inset-0 -translate-x-[200%] xl:group-hover:translate-x-0 transition-transform duration-500 ease-out">→</span>
                 </span>
-              </button>
+              </div>
             </div>
           </div>
         </div>
