@@ -278,9 +278,9 @@ function WorkCard({ project, index, onReadMore, sectionProgress, isMobile }) {
 
               <div className="inline-flex items-center text-white/80 group-hover:text-white text-base md:text-lg font-medium tracking-wide transition-colors duration-300 ease-out">
                 Read more
-                <span className="ml-2 md:ml-3 relative w-8 h-4 overflow-hidden">
-                  <span className="absolute inset-0 transform xl:group-hover:translate-x-[200%] transition-transform duration-500 ease-out">→</span>
-                  <span className="absolute inset-0 -translate-x-[200%] xl:group-hover:translate-x-0 transition-transform duration-500 ease-out">→</span>
+                <span className="ml-2 md:ml-3 relative w-8 h-4 overflow-hidden flex items-center">
+                  <span className="absolute inset-0 transform xl:group-hover:translate-x-[200%] transition-transform duration-500 ease-out leading-[1.2]">→</span>
+                  <span className="absolute inset-0 -translate-x-[200%] xl:group-hover:translate-x-0 transition-transform duration-500 ease-out leading-[1.2]">→</span>
                 </span>
               </div>
             </div>
