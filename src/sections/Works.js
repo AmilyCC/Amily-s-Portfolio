@@ -1,6 +1,5 @@
 import React, { useRef, useState, useContext, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { FaCode } from "react-icons/fa";
 import { getSkillColor } from "../config/skillMap";
 import { ModalContext } from "../App";
 

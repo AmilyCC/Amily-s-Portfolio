@@ -5,8 +5,6 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import { getSkillsData, getRadarData, getLineBreak, getTextPosition } from "../config/skillMap";
-import { FaCode, FaServer, FaTools, FaDatabase } from "react-icons/fa";
-import { SiJavascript, SiTypescript, SiReact, SiNodedotjs, SiExpress, SiMongodb, SiMysql, SiGit, SiDocker } from "react-icons/si";
 
 // 雷達圖標籤區塊
 const CustomTick = ({ payload, x, y, textAnchor }) => {
