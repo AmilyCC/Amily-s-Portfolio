@@ -116,7 +116,7 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  Web Developer
+                  PM
                 </motion.span>
                 <span className="mx-3 text-[#FFE66D]">•</span>
                 <motion.span 
@@ -125,7 +125,7 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  UI/UX Designer
+                  UX Designer
                 </motion.span>
                 <span className="mx-3 text-[#FFE66D]">•</span>
                 <motion.span 
