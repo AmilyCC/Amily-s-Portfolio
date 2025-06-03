@@ -1,5 +1,22 @@
 // 技能類別配置
 export const skillCategories = {
+  collab: {
+    name: "協作與專案管理",
+    icon: "🤝",
+    color: "var(--skill-collab)",
+    colorAlpha: "var(--skill-collab-20)",
+    keywords: ["#Git", "#GitHub", "#Notion", "#專案管理", "#團隊協作"],
+    description: [
+      "熟練 Git 團隊開發流程，能進行 Pull Request 與 Issue 協作",
+      "實際參與多人協作開發，熟悉 GitHub 分支與版本控制",
+      "使用 Notion 建立文件架構，統整會議紀錄、需求與進度追蹤",
+      "熟悉簡易的任務分派與專案流程管理，能協調成員溝通",
+      "習慣撰寫與整理技術紀錄、交接資料，提升團隊透明度"
+    ],
+    level: 8,
+    lineBreak: ["協作與", "專案管理"],
+    textPosition: { x: 0, textAnchor: "middle" }
+  },
   uiux: {
     name: "UI/UX 規劃",
     icon: "🔍",
@@ -16,6 +33,23 @@ export const skillCategories = {
     level: 8.5,
     lineBreak: ["UI/UX", "規劃"],
     textPosition: { x: 20, textAnchor: "start" }
+  },
+  ai: {
+    name: "DB與AI應用",
+    icon: "🤖",
+    color: "var(--skill-ai)",
+    colorAlpha: "var(--skill-ai-20)",
+    keywords: ["#SQL", "#Looker Studio", "#ChatGPT","#Cursor" ,"#n8n", "#Make"],
+    description: [
+      "使用 SQL 查詢資料，結合 Looker Studio 製作商業儀表板",
+      "分析營運數據，協助主管進行決策或提案呈現",
+      "實作自動化流程，整合 ChatGPT、n8n、Make、Cursor 等工具",
+      "導入 ChatGPT 協作系統、自動化表單與通知流程",
+      "優化團隊日常任務流程，減少約 60% 重複性人工作業"
+    ],
+    level: 7,
+    lineBreak: ["DB與AI", "應用"],
+    textPosition: { x: 0, textAnchor: "end" }
   },
   dev: {
     name: "前後端開發",
@@ -34,23 +68,6 @@ export const skillCategories = {
     lineBreak: ["前後端", "開發"],
     textPosition: { x: 0, textAnchor: "start" }
   },
-  collab: {
-    name: "協作與專案管理",
-    icon: "🤝",
-    color: "var(--skill-collab)",
-    colorAlpha: "var(--skill-collab-20)",
-    keywords: ["#Git", "#GitHub", "#Notion", "#專案管理", "#團隊協作"],
-    description: [
-      "熟練 Git 團隊開發流程，能進行 Pull Request 與 Issue 協作",
-      "實際參與多人協作開發，熟悉 GitHub 分支與版本控制",
-      "使用 Notion 建立文件架構，統整會議紀錄、需求與進度追蹤",
-      "熟悉簡易的任務分派與專案流程管理，能協調成員溝通",
-      "習慣撰寫與整理技術紀錄、交接資料，提升團隊透明度"
-    ],
-    level: 8,
-    lineBreak: ["協作與", "專案管理"],
-    textPosition: { x: 0, textAnchor: "middle" }
-  },
   ecommerce: {
     name: "電子商務",
     icon: "🛍️",
@@ -67,23 +84,6 @@ export const skillCategories = {
     level: 9,
     lineBreak: ["電子", "商務"],
     textPosition: { x: 0, textAnchor: "middle" }
-  },
-  ai: {
-    name: "DB與AI應用",
-    icon: "🤖",
-    color: "var(--skill-ai)",
-    colorAlpha: "var(--skill-ai-20)",
-    keywords: ["#SQL", "#Looker Studio", "#ChatGPT","#Cursor" ,"#n8n", "#Make"],
-    description: [
-      "使用 SQL 查詢資料，結合 Looker Studio 製作商業儀表板",
-      "分析營運數據，協助主管進行決策或提案呈現",
-      "實作自動化流程，整合 ChatGPT、n8n、Make、Cursor 等工具",
-      "導入 ChatGPT 協作系統、自動化表單與通知流程",
-      "優化團隊日常任務流程，減少約 60% 重複性人工作業"
-    ],
-    level: 7,
-    lineBreak: ["DB與AI", "應用"],
-    textPosition: { x: 0, textAnchor: "end" }
   }
 };
 
