@@ -60,7 +60,7 @@ export default function Works() {
       {/* 格子背景 */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:1rem_2rem] [mask-image:radial-gradient(ellipse_80%_60%_at_60%_20%,#000_70%,transparent_100%)]" />
 
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative max-w-6xl mx-auto">
         <AnimatedTitle sectionProgress={sectionProgress} isMobile={isMobile} />
 
         <div className="space-y-20 md:space-y-32 mt-12 md:mt-20">
