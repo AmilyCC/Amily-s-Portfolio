@@ -62,23 +62,19 @@ const ScrollProgress = ({ progress }) => {
           transition: { type: "spring", stiffness: 50, damping: 20 }
         }}
       >
-         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"Add commentMore actions
  width="80" height="80" viewBox="0 0 1024.000000 1024.000000"
  preserveAspectRatio="xMidYMid meet">
 
 <defs>
-  <filter id="glow">
-    <feDropShadow
-      dx="0"
-      dy="0"
-      stdDeviation="2"
-      floodColor="#4ECDC4"
-      floodOpacity="0.5"
-    />
+  <filter id="white-glow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="0" stdDeviation="500" flood-color="#FFF" flood-opacity="1"/>
+    <feDropShadow dx="0" dy="0" stdDeviation="80" flood-color="#FFF" flood-opacity="0.8"/>
+    <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#FFF" flood-opacity="0.3"/>
   </filter>
 </defs>
 
-<g filter="url(#glow)" transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
+<g filter="url(#white-glow)" transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
 fill="#000000" stroke="none">
 <path d="M1992 7538 c-44 -44 39 -235 186 -431 181 -240 590 -611 836 -758
 l54 -33 7 -90 c11 -155 35 -355 61 -506 46 -271 153 -658 215 -782 11 -21 19
