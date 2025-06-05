@@ -39,10 +39,10 @@ export const skillCategories = {
     icon: "🤖",
     color: "var(--skill-ai)",
     colorAlpha: "var(--skill-ai-20)",
-    keywords: ["#SQL", "#Looker Studio", "#ChatGPT","#Cursor" ,"#n8n", "#Make"],
+    keywords: ["#SQL", "#Looker Studio", "#Google Apps Script", "#ChatGPT","#Cursor" ,"#n8n", "#Make"],
     description: [
       "使用 SQL 查詢資料，結合 Looker Studio 製作商業儀表板",
-      "分析營運數據，協助主管進行決策或提案呈現",
+      "利用 GAS 串接與整理營運資料，自動產出日報表與指標統計",
       "實作自動化流程，整合 ChatGPT、n8n、Make、Cursor 等工具",
       "導入 ChatGPT 協作系統、自動化表單與通知流程",
       "優化團隊日常任務流程，減少約 60% 重複性人工作業"
